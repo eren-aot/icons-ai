@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import axios from 'axios';
 
 const IconSchema = z.object({
     description: z.string(),
@@ -27,7 +28,15 @@ const FormIcon = () => {
 
     const onSubmit = async (values: z.infer<typeof IconSchema>) => {
 
-        console.log(values);
+        try {
+
+            console.log(values);
+            const response = await axios.post("/api/generate-icons", values);
+            console.log(response.data)
+
+        } catch (error) {
+            console.log("Something Went Wrong !!!")
+        }
     }
 
     return (
@@ -51,30 +60,30 @@ const FormIcon = () => {
                         </FormItem>
                     )}
                 />
-                <FormField 
+                <FormField
                     control={form.control}
                     name='colors'
-                    render= {({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>
                                 Choose Your Colour
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder='Choose what colors you want' {...field}/>
+                                <Input placeholder='Choose what colors you want' {...field} />
                             </FormControl>
                         </FormItem>
                     )}
                 />
-                <FormField 
+                <FormField
                     control={form.control}
                     name='style'
-                    render= {({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>
                                 Choose Your Style
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder='Choose what style you want' {...field}/>
+                                <Input placeholder='Choose what style you want' {...field} />
                             </FormControl>
                         </FormItem>
                     )}
