@@ -7,9 +7,10 @@ import { z } from "zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import axios from "axios";
 
 const IdeaSchema = z.object({
-    idea: z.string(),
+    prompt: z.string(),
 })
 
 const FormIdea = () => {
@@ -17,13 +18,22 @@ const FormIdea = () => {
     const form = useForm<z.infer<typeof IdeaSchema>>({
         resolver: zodResolver(IdeaSchema),
         defaultValues: {
-            idea: ""
+            prompt: ""
         }
     })
 
     const onSubmit = async (values: z.infer<typeof IdeaSchema>) => {
 
-        console.log(values);
+        try {
+            console.log(values);
+
+            const response  = await axios.post("/api/generate-ideas",values);
+            console.log(response.data)
+            
+        } catch (error) {
+            console.log("Something Went Wrong !!!")
+        }
+
 
     }
 
@@ -33,7 +43,7 @@ const FormIdea = () => {
 
                 <FormField
                     control={form.control}
-                    name='idea'
+                    name='prompt'
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>
